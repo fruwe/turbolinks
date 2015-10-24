@@ -1,5 +1,21 @@
 ## Turbolinks (master)
 
+*   `Turbolinks.visit` and `Turbolinks.replace` accept a `title` option.
+
+    *Guillaume Malette*
+
+    ```coffeescript
+    # Specifying a title will overwrite the title
+    Turbolinks.visit(url, title: 'New title')
+
+    # Using `false` as a title will prevent Turbolinks from changing the title
+    Turbolinks.replace(html, title: false)
+    ```
+
+*   Noscript tags are no longer removed from body on page changes.
+
+    *René Hansen*
+
 *   Deprecated `redirect_via_turbolinks_to` in favor of `redirect_to url, turbolinks: true`.
 
     *Thibaut Courouble*
@@ -70,6 +86,20 @@
 
     *Kristian Plettenberg-Dussault*, *Thibaut Courouble*, *David Heinemeier Hansson*
 
+*   Trigger `page:partial-load` instead `page:load` on partial replacement (`Turbolinks.visit()` or `Turbolinks.replace()` with `change` option)
+
+    *Thibaut Courouble*
+
+*   Add a `page:after-remove` event, triggered after an element (stored in `event.data`) is removed from the DOM (partial replacement), or a body element is evicted from the cache, to give user scripts the opportunity to clean up references to these elements and avoid memory leaks.
+
+    This event replaces the `page:expire` event for cleaning up cached pages.
+
+    *Thibaut Courouble*, *Drew Martin*
+
+*   Clean up jQuery event handlers automatically when the `page:after-remove` event is fired (fix memory leak).
+
+    *Thibaut Courouble*, *Drew Martin*
+
 *   Fix `URI::InvalidURIError` when `X-XHR-Referer` is invalid and the request performs a redirection.
 
     *Thibaut Courouble*
@@ -109,6 +139,32 @@
     ```
 
     *Nick Reed*
+
+*   Add ability to re-run scripts on back/forward navigation by specifying `data-turbolinks-eval=always` on the `<script>` tag.
+
+    *Thibaut Courouble*, *Kevin Hughes*
+
+*   Add ability to opt out of Turbolinks in certain controllers by setting `config.turbolinks.auto_include` to `false` in `application.rb` and including `Turbolinks::Controller` in the controllers where Turbolinks is used.
+
+    *Thibaut Courouble*, *Elia Schito*
+
+*   Add ability to prevent `Turbolinks.visit` from resetting the scroll position.
+
+    ```coffeescript
+    Turbolinks.visit url, scroll: false
+    ```
+
+*   Attach affected elements to the `page:before-unload`, `page:change`, `page:load` and `page:partial-load` events (in `event.data`).
+
+    *Thibaut Courouble*
+
+*   Force a normal redirection when calling `Turbolinks.visit` with a different-origin URL.
+
+    *Thibaut Courouble*
+
+*   Trigger the `page:before-change` event on manual call to `Turbolinks.visit()`.
+
+    *Thibaut Courouble*
 
 ## Turbolinks 2.5.3 (December 8, 2014)
 
